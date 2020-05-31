@@ -18,6 +18,16 @@ Each test program draws a sequence of full screens, with each charachter a rando
 The test program takes an argument for how many full screens it should draw, so it can be timed.
 
 ## Usage
-Once I've written a bit more, the usage will be written here.
+
+Usage currently is very simple.  First install the dependancies.
+
+```
+pip3 install asciimatics sh
+```
+
+Then run:
+```
+python3 run-tests.py
+```
 
 
