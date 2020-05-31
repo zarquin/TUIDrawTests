@@ -14,9 +14,18 @@ import time
 import datetime
 import os, sys
 import pprint
+import platform
 
 
 global_results={}
+
+def get_platform_info():
+    a = platform.platform()
+    b = platform.system()
+    c = platform.version()
+    d = platform.release()
+    return a.replace(" ","_")
+
 
 #taken from http://granitosaurus.rocks/getting-terminal-size.html
 def get_terminal_size(fallback=(80, 24)):
@@ -30,12 +39,23 @@ def get_terminal_size(fallback=(80, 24)):
         columns, rows = fallback
     return columns, rows
 
-def plain_python_bg_draw_test(cycles=40):
+def plain_python_bg_hirefresh_test(cycles=40):
+    start_time = datetime.datetime.now()
+    cmd = subprocess.run(['python3', 'plain-python-bg-draw-hirefresh.py', str(cycles)])
+    time_delta = datetime.datetime.now() - start_time
+    return time_delta.total_seconds()      
 
+def plain_python_bg_draw_test(cycles=40):
     start_time = datetime.datetime.now()
     cmd = subprocess.run(['python3', 'plain-python-bg-draw.py', str(cycles)])
     time_delta = datetime.datetime.now() - start_time
     return time_delta.total_seconds()  
+
+def numpy_randints_bg_paint_test(cycles=40):
+    start_time = datetime.datetime.now()
+    cmd = subprocess.run(['python3', 'numpy-randints-bg-paint.py', str(cycles)])
+    time_delta = datetime.datetime.now() - start_time
+    return time_delta.total_seconds() 
 
 def numpy_randints_bg_draw_test(cycles=40):
     start_time = datetime.datetime.now()
@@ -45,7 +65,8 @@ def numpy_randints_bg_draw_test(cycles=40):
 
 def main():
 
-    global_results["testing start time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
+    global_results["testing_start_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
+    global_results["testing_platform"] = get_platform_info()
     (global_results["term_cols"], global_results["term_rows"]) = get_terminal_size()
 
     # get the time for different test runs.
@@ -53,15 +74,22 @@ def main():
     global_results["plain_python_bg_draw_test_80_time"]=plain_python_bg_draw_test(cycles=80)
     global_results["plain_python_bg_draw_test_200_time"]=plain_python_bg_draw_test(cycles=200)
 
+    # high refresh version. does a refresh at the end of each line.
+    global_results["plain_python_bg_draw_hirefresh_40_time"]=plain_python_bg_hirefresh_test(cycles=40)
+    global_results["plain_python_bg_draw_hirefresh_80_time"]=plain_python_bg_hirefresh_test(cycles=80)
+    global_results["plain_python_bg_draw_hirefresh_200_time"]=plain_python_bg_hirefresh_test(cycles=200)
+
     #numpy randint tests
     global_results["numpy_randints_bg_draw_test_40_time"]=numpy_randints_bg_draw_test(cycles=40)
     global_results["numpy_randints_bg_draw_test_80_time"]=numpy_randints_bg_draw_test(cycles=80)
     global_results["numpy_randints_bg_draw_test_200_time"]=numpy_randints_bg_draw_test(cycles=200)
 
-
-
-
-    global_results["testing end time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
+    #numpy randomint using full line paint method
+    global_results["numpy_randints_bg_paint_test_40_time"]=numpy_randints_bg_paint_test(cycles=40)
+    global_results["numpy_randints_bg_paint_test_80_time"]=numpy_randints_bg_paint_test(cycles=80)
+    global_results["numpy_randints_bg_paint_test_200_time"]=numpy_randints_bg_paint_test(cycles=200)
+   
+    global_results["testing_end_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
 
     #print("{}".format( global_results))
     pprint.pprint(global_results)
