@@ -1,4 +1,4 @@
-# simple python test program.
+#numpy draw test
 """
 TUIDrawTests
 Benchmarking for Terminal Drawing 
@@ -6,17 +6,17 @@ zarquin@ucc.asn.au
 (c) 2020
 See LICENSE for licence details
 """
-
-from random import randint
+import numpy as np
 from asciimatics.screen import Screen
 import argparse
 
 run_limit=0
 
 def draw_frame(screen):
+    array=np.random.randint(256, size=(screen.width, screen.height))
     for i in range(screen.height):
         for j in range(screen.width):
-            screen.print_at(" ",j,i,bg=randint(0, screen.colours - 1))
+            screen.print_at(" ",j,i,bg=array[j,i])
     screen.refresh()
 
 def ds(screen):
@@ -37,6 +37,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
