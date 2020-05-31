@@ -22,7 +22,7 @@ The test program takes an argument for how many full screens it should draw, so 
 Usage currently is very simple.  First install the dependancies.
 
 ```
-pip3 install asciimatics sh
+pip3 install asciimatics sh numpy
 ```
 
 Then run:
