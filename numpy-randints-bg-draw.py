@@ -14,6 +14,7 @@ run_limit=0
 
 def draw_frame(screen):
     array=np.random.randint(256, size=(screen.width, screen.height))
+
     for i in range(screen.height):
         for j in range(screen.width):
             screen.print_at(" ",j,i,bg=array[j,i])

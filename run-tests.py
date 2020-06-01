@@ -39,6 +39,17 @@ def get_terminal_size(fallback=(80, 24)):
         columns, rows = fallback
     return columns, rows
 
+#
+# Tests to run are listed below here.  they return the elapsed run time.  they taken an argument of how many full screen cycles to run.
+#
+
+# Rust based version
+def rust_crossterm_bg_draw_test(cycles=40):
+    start_time = datetime.datetime.now()
+    cmd = subprocess.run(['rust-crossterm-bg-draw/target/debug/rust-crossterm-bg-draw',str(cycles)])
+    time_delta = datetime.datetime.now() - start_time
+    return time_delta.total_seconds()
+   
 def plain_python_bg_hirefresh_test(cycles=40):
     start_time = datetime.datetime.now()
     cmd = subprocess.run(['python3', 'plain-python-bg-draw-hirefresh.py', str(cycles)])
@@ -63,8 +74,10 @@ def numpy_randints_bg_draw_test(cycles=40):
     time_delta = datetime.datetime.now() - start_time
     return time_delta.total_seconds()  
 
+
 def main():
 
+    #get some starting test data.
     global_results["testing_start_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
     global_results["testing_platform"] = get_platform_info()
     (global_results["term_cols"], global_results["term_rows"]) = get_terminal_size()
@@ -89,6 +102,11 @@ def main():
     global_results["numpy_randints_bg_paint_test_80_time"]=numpy_randints_bg_paint_test(cycles=80)
     global_results["numpy_randints_bg_paint_test_200_time"]=numpy_randints_bg_paint_test(cycles=200)
    
+    #rust using corssterm.
+    global_results["rust_crossterm_bg_draw_40_test_time"]=rust_crossterm_bg_draw_test(cycles=40)
+    global_results["rust_crossterm_bg_draw_80_test_time"]=rust_crossterm_bg_draw_test(cycles=80)
+    global_results["rust_crossterm_bg_draw_200_test_time"]=rust_crossterm_bg_draw_test(cycles=200)
+
     global_results["testing_end_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
 
     #print("{}".format( global_results))
