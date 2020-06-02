@@ -50,6 +50,7 @@ This should give some indication about screen refreshing performance.
 The drawing tests currently are:
 
 | Test Name | Description |
+|:---:|---|
 | `numpy_randints_bg_draw_test`| Using Numpy table of random ints that is the size of the screen to set the BG colour.|
 |`numpy_randints_bg_paint_test`| Using Numpy table, but using the `paint()` method instead of `print_at()`|
 |`plain_python_bg_draw_hirefresh`| Deliberatly slamming the screen drawing by calling `screen.refresh()` after each line|
