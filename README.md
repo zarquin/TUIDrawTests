@@ -19,11 +19,18 @@ The test program takes an argument for how many full screens it should draw, so 
 
 ## Usage
 
-Usage currently is very simple.  First install the dependancies.
+Usage currently is very simple.  First install the python3 dependancies.
 
 ```
 pip3 install asciimatics sh numpy
 ```
+Then we need to compile the rust code.  Open a terminal in the TUIDrawTests top level.
+```
+cd rust-crossterm-bg-draw/
+cargo run 10
+cd ..
+```
+When you type 'cargo run 10' it will download all the rust dependencies, compile the test program, and then run it briefly.
 
 Then run:
 ```
