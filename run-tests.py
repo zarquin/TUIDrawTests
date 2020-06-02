@@ -49,7 +49,14 @@ def rust_crossterm_bg_draw_test(cycles=40):
     cmd = subprocess.run(['rust-crossterm-bg-draw/target/debug/rust-crossterm-bg-draw',str(cycles)])
     time_delta = datetime.datetime.now() - start_time
     return time_delta.total_seconds()
-   
+
+# No Draw test, to see what CPU load there is and what impact the screen drawing has.
+def plain_python_no_draw_test(cycles=40):
+    start_time = datetime.datetime.now()
+    cmd = subprocess.run(['python3','plain-python-no-draw.py',str(cycles)])
+    time_delta = datetime.datetime.now() - start_time
+    return time_delta.total_seconds()
+
 def plain_python_bg_hirefresh_test(cycles=40):
     start_time = datetime.datetime.now()
     cmd = subprocess.run(['python3', 'plain-python-bg-draw-hirefresh.py', str(cycles)])
@@ -82,6 +89,11 @@ def main():
     global_results["testing_platform"] = get_platform_info()
     (global_results["term_cols"], global_results["term_rows"]) = get_terminal_size()
 
+    # do a run of the no-screen-draw option.
+    global_results["plain_python_no_draw_test_40_time"]=plain_python_no_draw_test(cycles=40)
+    global_results["plain_python_no_draw_test_80_time"]=plain_python_no_draw_test(cycles=80)
+    global_results["plain_python_no_draw_test_200_time"]=plain_python_no_draw_test(cycles=200)
+
     # get the time for different test runs.
     global_results["plain_python_bg_draw_test_40_time"]=plain_python_bg_draw_test(cycles=40)
     global_results["plain_python_bg_draw_test_80_time"]=plain_python_bg_draw_test(cycles=80)
@@ -103,9 +115,9 @@ def main():
     global_results["numpy_randints_bg_paint_test_200_time"]=numpy_randints_bg_paint_test(cycles=200)
    
     #rust using corssterm.
-    global_results["rust_crossterm_bg_draw_40_test_time"]=rust_crossterm_bg_draw_test(cycles=40)
-    global_results["rust_crossterm_bg_draw_80_test_time"]=rust_crossterm_bg_draw_test(cycles=80)
-    global_results["rust_crossterm_bg_draw_200_test_time"]=rust_crossterm_bg_draw_test(cycles=200)
+    global_results["rust_crossterm_bg_draw_test_40_time"]=rust_crossterm_bg_draw_test(cycles=40)
+    global_results["rust_crossterm_bg_draw_test_80_time"]=rust_crossterm_bg_draw_test(cycles=80)
+    global_results["rust_crossterm_bg_draw_test_200_time"]=rust_crossterm_bg_draw_test(cycles=200)
 
     global_results["testing_end_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
 

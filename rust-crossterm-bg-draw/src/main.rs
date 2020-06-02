@@ -51,7 +51,6 @@ fn main() -> Result<()>  {
                 //write the background.
                 let iini = rng.gen_range(0, 255);
                 queue!(stdout(), cursor::MoveTo(x,y), SetBackgroundColor(Color::AnsiValue(iini) ), Print(" ") )?;
-
             }
         }
         //update screen
