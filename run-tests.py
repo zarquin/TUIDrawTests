@@ -15,6 +15,7 @@ import datetime
 import os, sys
 import pprint
 import platform
+import json
 
 
 global_results={}
@@ -122,7 +123,7 @@ def main():
     global_results["testing_end_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
 
     #print("{}".format( global_results))
-    pprint.pprint(global_results)
+    pprint.pprint(json.dumps(global_results))
 
 
 if __name__ == "__main__":
