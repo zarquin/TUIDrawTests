@@ -40,6 +40,18 @@ def get_terminal_size(fallback=(80, 24)):
         columns, rows = fallback
     return columns, rows
 
+#taken from https://unix.stackexchange.com/questions/264329/get-the-terminal-emulator-name-inside-the-shell-script
+def get_terminal_emulator_name():
+    shell_pid = os.getppid()
+    term_em="unknown"
+    try:
+        #get the parent of the shell
+        term_em_pid = sh.ps('-o','ppid=','-p',shell_pid).strip()
+        term_em_name = sh.ps('-o','comm=','-p',term_em_pid)
+        term_em = term_em_name.strip()
+    except Exception:
+       term_em="unknown"
+    return term_em
 #
 # Tests to run are listed below here.  they return the elapsed run time.  they taken an argument of how many full screen cycles to run.
 #
@@ -83,12 +95,14 @@ def numpy_randints_bg_draw_test(cycles=40):
     return time_delta.total_seconds()  
 
 
+
 def main():
 
     #get some starting test data.
     global_results["testing_start_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
     global_results["testing_platform"] = get_platform_info()
     (global_results["term_cols"], global_results["term_rows"]) = get_terminal_size()
+    global_results["term_name"] = get_terminal_emulator_name()
 
     # do a run of the no-screen-draw option.
     global_results["plain_python_no_draw_test_40_time"]=plain_python_no_draw_test(cycles=40)
@@ -123,7 +137,7 @@ def main():
     global_results["testing_end_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
 
     #print("{}".format( global_results))
-    pprint.pprint(json.dumps(global_results))
+    print(json.dumps(global_results))
 
 
 if __name__ == "__main__":
