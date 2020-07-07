@@ -7,6 +7,8 @@ zarquin@ucc.asn.au
 (c) 2020
 See LICENSE for licence details
 """
+from __future__ import print_function, unicode_literals
+from PyInquirer import prompt
 
 import sh
 import subprocess
@@ -17,7 +19,6 @@ import pprint
 import platform
 import json
 
-
 global_results={}
 
 def get_platform_info():
@@ -27,6 +28,14 @@ def get_platform_info():
     d = platform.release()
     return a.replace(" ","_")
 
+def get_test_notes():
+    questions = [
+    {
+        'type': 'input',
+        'name': 'notes',
+        'message': 'Any Notes about this test',
+     }]
+    return prompt(questions)
 
 #taken from http://granitosaurus.rocks/getting-terminal-size.html
 def get_terminal_size(fallback=(80, 24)):
@@ -94,11 +103,10 @@ def numpy_randints_bg_draw_test(cycles=40):
     time_delta = datetime.datetime.now() - start_time
     return time_delta.total_seconds()  
 
-
-
 def main():
-
     #get some starting test data.
+
+    global_results["notes"] = get_test_notes()['notes']
     global_results["testing_start_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
     global_results["testing_platform"] = get_platform_info()
     (global_results["term_cols"], global_results["term_rows"]) = get_terminal_size()
@@ -134,11 +142,16 @@ def main():
     global_results["rust_crossterm_bg_draw_test_80_time"]=rust_crossterm_bg_draw_test(cycles=80)
     global_results["rust_crossterm_bg_draw_test_200_time"]=rust_crossterm_bg_draw_test(cycles=200)
 
-    global_results["testing_end_time"] = datetime.datetime.now().strftime("%Y%M%D-%H%M%S")
+    global_results["testing_end_time"] = datetime.datetime.now().strftime("%Y%m%D-%H%M%S")
 
-    #print("{}".format( global_results))
-    print(json.dumps(global_results))
+    x=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
+    json_filename="Results/result-{}.json".format(x)
+
+    with open(json_filename, 'w') as outfile:
+        json.dump(global_results, outfile)
+
+    print("   Testing done    ")
 
 if __name__ == "__main__":
     main()

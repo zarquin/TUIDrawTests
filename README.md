@@ -22,7 +22,7 @@ The test program takes an argument for how many full screens it should draw, so 
 Usage currently is very simple.  First install the python3 dependancies.
 
 ```
-pip3 install asciimatics sh numpy
+pip3 install asciimatics sh numpy PyInquirer
 ```
 Then we need to compile the rust code.  If you don't have rust installed.. Install rust:
 
