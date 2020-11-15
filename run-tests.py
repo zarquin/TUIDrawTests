@@ -65,6 +65,13 @@ def get_terminal_emulator_name():
 # Tests to run are listed below here.  they return the elapsed run time.  they taken an argument of how many full screen cycles to run.
 #
 
+# Rust based tuikit version
+def rust_tuikit_bg_draw_test(cycles=40):
+    start_time = datetime.datetime.now()
+    cmd = subprocess.run(['rust-tuikit-bg-draw/target/debug/rust-tuikit-bg-draw',str(cycles)])
+    time_delta = datetime.datetime.now() - start_time
+    return time_delta.total_seconds()
+
 # Rust based version
 def rust_crossterm_bg_draw_test(cycles=40):
     start_time = datetime.datetime.now()
@@ -141,6 +148,12 @@ def main():
     global_results["rust_crossterm_bg_draw_test_40_time"]=rust_crossterm_bg_draw_test(cycles=40)
     global_results["rust_crossterm_bg_draw_test_80_time"]=rust_crossterm_bg_draw_test(cycles=80)
     global_results["rust_crossterm_bg_draw_test_200_time"]=rust_crossterm_bg_draw_test(cycles=200)
+
+    #rust using tuikit
+    #not random colours
+    global_results["rust_tuikit_bg_draw_test_40_time"]=rust_tuikit_bg_draw_test(cycles=40)
+    global_results["rust_tuikit_bg_draw_test_80_time"]=rust_tuikit_bg_draw_test(cycles=80)
+    global_results["rust_tuikit_bg_draw_test_200_time"]=rust_tuikit_bg_draw_test(cycles=200)    
 
     global_results["testing_end_time"] = datetime.datetime.now().strftime("%Y%m%D-%H%M%S")
 
